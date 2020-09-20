@@ -1,8 +1,8 @@
 #This is the Dockerfile to run Front-End
 #Partimos de la última imágen de node
-FROM node:lastest
+FROM node:latest
 #Copiamos la aplicación a un directorio dentro dl container
-COPY /aik-front /app
+COPY copy-aik-ui /app
 #Nos paramos en el directorio donde realizamos la copia
 WORKDIR /app
 #Instalamos el gestor de paquetes de node npm
