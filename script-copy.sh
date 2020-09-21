@@ -10,22 +10,22 @@ echo "Se ha copiado la carpeta del BackEnd a la carpeta de Infra donde se encuen
 #Nos paramos en la carpeta donde se encuentran los dockerfile
 cd Infra/Docker
 #Cambiamos el nombre del dockerfile-back a Dockerfile
-mv Dockerfile-back Dockerfile
-echo "El nombre del dockerfile-back ha sido cambiado"
+#mv Dockerfile-back Dockerfile
+#echo "El nombre del dockerfile-back ha sido cambiado"
 #Ahora construimos la imagen correspondiente al back
-sudo docker build -t aik-back:1.0 .
+sudo docker build -t aik-back:1.0 back.Dockerfile .
 echo "La imagen docker del backend ha sido construida"
 
 #Ahora procedemos a hacer lo mismo con el front
 #Le volvemos a cambiar el nombre a la imagen del back a su nombre original
-mv Dockerfile Dockerfile-back
+#mv Dockerfile Dockerfile-back
 #Cambiamos el nombre del dockerfile-front a Dockerfile
-mv Dockerfile-front Dockerfile
+#mv Dockerfile-front Dockerfile
 #Construimos la imagen correspondiente al front
-sudo docker build -t aik-front:1.0 .
+sudo docker build -t aik-front:1.0 -f front.Dockerfile .
 echo "La imagen docker del frontend ha sido construida"
 #Asignamos de nuevo el nombre por defecto de la imagen del front
-mv Dockerfile Dockerfile-front
+#mv Dockerfile Dockerfile-front
 
 #Termina el proceso...
 echo "Las imagenes docker del front y back han sido construidas satisfactoriamente¡"
