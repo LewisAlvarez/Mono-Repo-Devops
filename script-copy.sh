@@ -29,3 +29,7 @@ mv Dockerfile Dockerfile-front
 
 #Termina el proceso...
 echo "Las imagenes docker del front y back han sido construidas satisfactoriamente¡"
+#Eliminamos las carpetas copiadas temporalmente a la carpeta Infra/Docker
+rm -rf copy-aik-back
+rm -rf copy-aik-ui
+echo "Se eliminaron los directorios temporales"
