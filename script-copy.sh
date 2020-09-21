@@ -13,7 +13,7 @@ cd Infra/Docker
 #mv Dockerfile-back Dockerfile
 #echo "El nombre del dockerfile-back ha sido cambiado"
 #Ahora construimos la imagen correspondiente al back
-sudo docker build -t aik-back:1.0 back.Dockerfile .
+sudo docker build -t aik-back:1.0 -f back.Dockerfile .
 echo "La imagen docker del backend ha sido construida"
 
 #Ahora procedemos a hacer lo mismo con el front
