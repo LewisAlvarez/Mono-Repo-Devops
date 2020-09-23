@@ -5,8 +5,8 @@ Para la ejecución del proyecto en el estado actual se debe realizar lo siguient
 
 1) Tener docker previamente instalado
 2) Ingresar a superusuario o agregar su usuario para ser ejecutado con docker sin sudo.
-3) Dar permisos al script script-copy.sh "chmod +x script-copy.sh"
-4) Ejecutar el script ./script.sh
+3) Dar permisos al script build-docker-images.sh "chmod +x build-docker-images.sh"
+4) Ejecutar el script ./build-docker-images.sh
 
 El script contruye las imagenes docker tanto para el front como para el back.
 Las imagenes tienen el nombre para esta version:
