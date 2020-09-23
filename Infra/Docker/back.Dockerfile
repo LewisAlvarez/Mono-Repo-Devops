@@ -1,6 +1,6 @@
 #This is the Dockerfile to run Back-End
 #Partimos de la última imágen de node
-FROM node:latest
+FROM node:alpine
 #LABEL lewis040@hotmail.es
 #Copiamos la aplicación a un directorio dentro dl container
 COPY copy-aik-back /app
