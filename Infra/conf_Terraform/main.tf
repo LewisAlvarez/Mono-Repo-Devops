@@ -18,10 +18,27 @@ resource "docker_container" "FrontEnd"{
     }
 }
 
+#Realizamos el mismo procedimiento para correr el contenedor del back, pero con sus parametros.
+resource "docker_container" "BackEnd"{
+    image = docker_image.image_backEnd.latest
+    name = "Container_BackEnd"
+    attach = false
+    ports {
+        internal = var.port_backend
+        external = var.port_backend
+    }
+}
+
 #Creamos el recurso que nos carga la imagen previamente contruida por el script build-docker.images.sh
 #Esto sirve para "Inicializar la imagen que se llama al momento de crear el contenedor"
 #El recurso "docker_image" es para hacer pull de una imagen
 resource "docker_image" "image_frontEnd"{
-    #Nombre de la imgaen declarada en el script
+    #Nombre de la imgagen declarada en el script
     name = "aik-front:1.0"
+}
+
+#Declaramos el recurso con la imagen para el backend
+resource "docker_image" "image_backEnd"{
+    #Nombre de la imagen declarada en el script
+    name = "aik-back:1.0"
 }
