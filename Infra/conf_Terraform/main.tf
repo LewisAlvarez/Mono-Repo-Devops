@@ -13,8 +13,8 @@ resource "docker_container" "FrontEnd"{
     name = "Container_FrontEnd"
     attach = false
     ports {
-        internal = "3030"
-        external = "3030"
+        internal = var.port_frontend
+        external = var.port_frontend
     }
 }
 
