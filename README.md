@@ -12,14 +12,14 @@ El script contruye las imagenes docker tanto para el front como para el back.
 Las imagenes tienen el nombre para esta version:
 Para el front: aik-front:1.0
 Para el back: aik-back:1.0
-
+Ademas de esto el script inicializa en terraform con los archivos de configuracion y aplica los cambios necesarios para llegar al estado deseado
 .....
-5) Debería continuar lo de terraform (TO DO)
+5) 
 
 Current State
-![Current state](images/3.png)
+![Current state](aik-front/images/3.png)
 
-![Current state](images/2.png)
+![Current state](aik-fornt/images/2.png)
 
 Desired State
-![Desired state](images/1.png)
+![Desired state](aik-front/images/1.png)
