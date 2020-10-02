@@ -19,7 +19,7 @@ Ademas de esto el script inicializa en terraform con los archivos de configuraci
 Current State
 ![Current state](aik-front/images/3.png)
 
-![Current state](aik-fornt/images/2.png)
+![Current state](aik-front/images/2.png)
 
 Desired State
 ![Desired state](aik-front/images/1.png)
