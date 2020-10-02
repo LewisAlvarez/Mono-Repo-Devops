@@ -41,6 +41,6 @@ cd ..
 cd conf_Terraform
 
 #Se inicializa el directorio de trabajo que contiene los archivos de configuracion de Terraform
-terraform init
+#terraform init
 #Se aplican los cambios reuqeridos para alcanzar el estado deseado de la configuracion
 terraform apply -auto-approve
