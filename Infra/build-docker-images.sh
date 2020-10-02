@@ -35,3 +35,10 @@ echo "Las imagenes docker del front y back han sido construidas satisfactoriamen
 rm -rf copy-aik-back
 rm -rf copy-aik-ui
 echo "Se eliminaron los directorios temporales"
+
+#Configuración del Terraform
+cd ..
+cd conf_Terraform
+
+terraform init
+terraform apply -auto-approve
