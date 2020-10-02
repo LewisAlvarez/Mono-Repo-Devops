@@ -3,7 +3,7 @@
 // Declare our dependencies
 var express = require('express');
 var request = require('superagent');
-var backendHost = process.env.BACK_HOST || 'localhost';
+var backendHost = process.env.BACK_HOST || '172.17.0.2';
 // Create our express app
 var app = express();
 
@@ -22,22 +22,19 @@ app.get('/', function(req, res){
 })
 
 app.get('/buycars', function(req, res){
-  request
-    .get('http://'+backendHost+':3000/buycars')
-    .end(function(err, data) {
+  request.get('http://'+backendHost+':3000/buycars').end(function(err, data) {
       if(data.status == 403){
         res.send(403, '403 Forbidden');
       } else {
         var buy = data.body;
         res.render('buycars', { buy: buy} );
       }
-    })
+   })
 })
 
 app.get('/vehicles', function(req, res){
-  request
-    .get('http://'+backendHost+':3000/vehicles')
-    .set('Authorization', 'Bearer ' + req.access_token)
+  request.get('http://'+backendHost+':3000/vehicles')
+  //  .set('Authorization', 'Bearer ' + req.access_token)
     .end(function(err, data) {
       if(data.status == 403){
         res.send(403, '403 Forbidden');
@@ -63,16 +60,16 @@ app.get('/support', function(req, res){
 
 
 app.get('/experience', function(req, res){
-  request
-    .get('http://'+backendHost+':3000/experience')
+  request.get('http://'+backendHost+':3000/experience')
     .end(function(err, data) {
+      console.log("Petición Recibida.");
       if(data.status == 403){
         res.send(403, '403 Forbidden');
       }else{
         var experience = data.body;
         res.render('experience', {experience : experience});
       }
-    })
+   })
 })
 
 module.exports = app.listen(3030);
