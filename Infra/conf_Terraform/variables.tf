@@ -1,13 +1,44 @@
 #Este archivo contiene las variables de entrada a la configuracón de main.tf de terraform
-#Se expresan las vaiabres para los puertos que usan el Front y el Back
-variable "port_frontend"{
+#Puertos de las aplicaciones
+#Puerto FrontEnd
+variable "port_aik_front"{
     default = 3030
-   // type ="string"
-    description = "Esta variable contendra el valor del puerto para comunicarse con el front-end"
+    description = "Puerto de comunicacion con el Front de la aplicacion"
+}
+#Puerto BackEnd
+variable "port_aik_back"{
+    default = 3000
+    description = "Puerto de comunicacion con el Back de la aplicacion"
+}
+#Claves de acceso a AWS
+variable "my_access_key" {
+  description = "Access-key-for-AWS"
+  default = "no_access_key_value_found"
+}
+ 
+variable "my_secret_key" {
+  description = "Secret-key-for-AWS"
+  default = "no_secret_key_value_found"
 }
 
-variable "port_backend"{
-    default = 3000
-    //type ="string"
-    description = "Esta variable contendra el valor del puerto para comunicarse con el back-end"
+#Variables usadas para la configuración de las instancias
+#AMI
+variable "aik_ami_id" {
+    default = "ami-0357d42faf6fa582f"
+    description = "ID de la imagen ami"
+}
+#Instance Type
+variable "aik_instance_type"{
+    default = "t2.micro"
+    description = "Tipo de instancia"
+}
+#Maximo numero de instancias en autoscaling
+variable "autoscaling_max"{
+    default = "2"
+    description = "Numero maximo de instancias en autoscaling"
+}
+#Minimo de numero de instancias en autoscaling
+variable "autoscaling_min"{
+    default = "2"
+    description = "Numero minimo de instancias en autoscaling"
 }

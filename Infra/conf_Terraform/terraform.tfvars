@@ -1,3 +1,3 @@
 #En este archivo se encuentra la inicialización de la variables
-port_frontend = "3030"
-port_backend = "3000"
+my_access_key = "aws_user_access_key"
+my_secret_key = "aws_user_secret_key"

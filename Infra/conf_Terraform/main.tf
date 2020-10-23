@@ -1,44 +1,48 @@
-#Configuración para crear los contenedores de docker usando terraform
+#Configuración para el proveedor donde se desplegará la infraestructura
 #Nomenclatura --> resource <PROVIDER> <TYPE> <NAME>
-provider "docker"{
-
+provider "aws"{
+    region = "us-east-1"
+    version = "2.24"
+    #Credenciales de la cuenta
+    access_key = var.my_access_key
+	secret_key = var.my_secret_key
 }
 
-#Para correr el contenedor del FrontEnd, realizamos un mapeo de atributos de docker con terraform
-#Cargamos las imagenes creadas con el script
-#Para correr un contenedor en background se debe escribir attach=false
-#La definición de puertos se hace tanto Interna como Externa, uno es el puerto por donde escuchará el contenedor y el otro es el puerto de la maquina host
-resource "docker_container" "FrontEnd"{
-    image = docker_image.image_frontEnd.latest
-    name = "Container_FrontEnd"
-    attach = false
-    ports {
-        internal = var.port_frontend
-        external = var.port_frontend
-    }
+#Basados en el diagrama de la solución los recursos a crear son: 2 intancias EC2, 2 zonas de disponibilidad, 1 balanceador de carga, 1 auto-scaling-group y 2 RDS.
+
+#Se crea un security group para permitir el acceso al pueto de la aplicacion
+
+
+#Crear una instancia EC2 para el back
+resource "aws_instance" "aik_back" {
+	ami = "ami-0357d42faf6fa582f"
+	instance_type = "t2.micro"
+	
+	tags = {
+		Name = "EC2 BackEnd AIK"
+	}
 }
 
-#Realizamos el mismo procedimiento para correr el contenedor del back, pero con sus parametros.
-resource "docker_container" "BackEnd"{
-    image = docker_image.image_backEnd.latest
-    name = "Container_BackEnd"
-    attach = false
-    ports {
-        internal = var.port_backend
-        external = var.port_backend
-    }
+#Crear una instancia EC2 para el front
+resource "aws_instance" "aik_front" {
+	ami = "ami-0357d42faf6fa582f"
+	instance_type = "t2.micro"
+	
+	tags = {
+		Name = "EC2 FrontEnd AIK"
+	}
 }
 
-#Creamos el recurso que nos carga la imagen previamente contruida por el script build-docker.images.sh
-#Esto sirve para "Inicializar la imagen que se llama al momento de crear el contenedor"
-#El recurso "docker_image" es para hacer pull de una imagen
-resource "docker_image" "image_frontEnd"{
-    #Nombre de la imgagen declarada en el script
-    name = "aik-front:1.0"
+resource "aws_launch_configuration" "aik-configuration"{
+    name = "placeholder"
+    image_id = var.aik_ami_id
+    instance_type = var.aik_instance_type
+    security_group = [aws_security_group.aik-sg-portal.id]
+    key_name = var.aik_key_name
 }
 
-#Declaramos el recurso con la imagen para el backend
-resource "docker_image" "image_backEnd"{
-    #Nombre de la imagen declarada en el script
-    name = "aik-back:1.0"
+resource "aws_autoscaling_group" "aik_autoscaling"{
+    launch_configuration = aws_launch_configurations.aik-lcfg.name
+    min_size = 2
+    max_size = 2
 }

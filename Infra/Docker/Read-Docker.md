@@ -1,2 +1,0 @@
-En esta carpeta se crearan los Dockerfile para poder correr el aplicativo AIK. Tanto para el front como para el Back
-En esta carpeta se copiara de manera temporal ejecutando el script las carpetas del front y el back para la creación de las imagenes.
