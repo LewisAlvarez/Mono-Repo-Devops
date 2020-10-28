@@ -10,16 +10,6 @@ variable "port_aik_back"{
     default = 3000
     description = "Puerto de comunicacion con el Back de la aplicacion"
 }
-#Claves de acceso a AWS
-variable "my_access_key" {
-  description = "Access-key-for-AWS"
-  default = "no_access_key_value_found"
-}
- 
-variable "my_secret_key" {
-  description = "Secret-key-for-AWS"
-  default = "no_secret_key_value_found"
-}
 
 #Variables usadas para la configuración de las instancias
 #AMI
@@ -39,6 +29,6 @@ variable "autoscaling_max"{
 }
 #Minimo de numero de instancias en autoscaling
 variable "autoscaling_min"{
-    default = "2"
+    default = "1"
     description = "Numero minimo de instancias en autoscaling"
 }

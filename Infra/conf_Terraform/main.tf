@@ -2,10 +2,6 @@
 #Nomenclatura --> resource <PROVIDER> <TYPE> <NAME>
 provider "aws"{
     region = "us-east-1"
-    version = "2.24"
-    #Credenciales de la cuenta
-    access_key = var.my_access_key
-	secret_key = var.my_secret_key
 }
 
 #Basados en el diagrama de la solución los recursos a crear son: 2 intancias EC2, 2 zonas de disponibilidad, 1 balanceador de carga, 1 auto-scaling-group y 2 RDS.
@@ -18,7 +14,7 @@ resource "aws_security_group" "aik_security_group" {
     #Acceso http desde cualquier direccion
     ingress {
         from_port = 80
-        to_port = 80
+        to_port = var.port_aik_front
         protocol = "tcp"
         cidr_blocks = [
             "0.0.0.0/0"
@@ -43,7 +39,7 @@ data "aws_availability_zones" "all_zones" {}
 #Creacion de un balanceador de carga
 resource "aws_elb" "aik_elb" {
     name = "aik-elb"
-    availability_zones = []"${data.aws_availability_zones.all_zones.names}"]
+    #availability_zones = []"${data.aws_availability_zones.all_zones.names}"]
     security_groups = ["${aws_securiry_group.aik.elb.id}"]
 
     listener {
