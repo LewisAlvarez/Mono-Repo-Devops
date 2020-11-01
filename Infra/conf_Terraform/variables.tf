@@ -32,3 +32,7 @@ variable "autoscaling_min"{
     default = "1"
     description = "Numero minimo de instancias en autoscaling"
 }
+variable "aik_key_name" {
+  description = "Key pair name"
+  default     = "estudianteAutomatizacion20202_3"
+}

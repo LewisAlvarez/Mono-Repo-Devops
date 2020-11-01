@@ -40,7 +40,7 @@ data "aws_availability_zones" "all_zones" {}
 resource "aws_elb" "aik_elb" {
     name = "aik-elb"
     #availability_zones = []"${data.aws_availability_zones.all_zones.names}"]
-    security_groups = ["${aws_securiry_group.aik.elb.id}"]
+    security_groups = ["${aws_security_group.aik_security_group.id}"]
 
     listener {
         instance_port = 80
@@ -53,7 +53,7 @@ resource "aws_elb" "aik_elb" {
         healthy_threshold = 2
         unhealthy_threshold = 2
         timeout = 3
-        #target = "HTTP:80/"
+        target = "HTTP:80/"
         interval = 30
     }
 }
@@ -64,18 +64,18 @@ resource "aws_launch_configuration" "aik_configuration"{
     name = "placeholder-aik-lc"
     image_id = var.aik_ami_id
     instance_type = var.aik_instance_type
-    security_group = [aws_security_group.aik-security_group.id]
+    security_group = [aws_security_group.aik_security_group.id]
     key_name = var.aik_key_name
 }
 #Creacion del autoscaling group
 resource "aws_autoscaling_group" "aik_autoscaling"{
     name = "aik-autoscaling"
-    availability_zones = []"${data.aws_availability_zones.all_zones.names}"]
+    availability_zones = ["${data.aws_availability_zones.all_zones.names}"]
     force_delete = true
     min_size = var.autoscaling_max
     max_size = var.autoscaling_min
     #Lo que debe realizar cada vez que escale
-    launch_configuration = aws_launch_configurations.aik_configuration.name
+    launch_configuration = aws_launch_configuration.aik_configuration.name
     #Se ubica la nueva instancia dentro del balanceador de carga
     load_balancers = ["${aws_elb.aik_elb.name}"]
 
@@ -86,21 +86,21 @@ resource "aws_autoscaling_group" "aik_autoscaling"{
 }
 
 #Crear una instancia EC2 para el back
-#resource "aws_instance" "aik_back" {
-#	ami = "ami-0357d42faf6fa582f"
-#	instance_type = "t2.micro"
-#	
-#	tags = {
-#		Name = "EC2 BackEnd AIK"
-#	}
-#}
-#
-##Crear una instancia EC2 para el front
-#resource "aws_instance" "aik_front" {
-#	ami = "ami-0357d42faf6fa582f"
-#	instance_type = "t2.micro"
-#	
-#	tags = {
-#		Name = "EC2 FrontEnd AIK"
-#	}
-#}
+resource "aws_instance" "aik_back" {
+	ami = var.aik_ami_id
+	instance_type = "t2.micro"
+	
+	tags = {
+		Name = "EC2 BackEnd AIK"
+	}
+}
+
+#Crear una instancia EC2 para el front
+resource "aws_instance" "aik_front" {
+	ami = var.aik_ami_id
+	instance_type = var.aik_instance_type
+    
+	tags = {
+		Name = "EC2 FrontEnd AIK"
+	}
+}

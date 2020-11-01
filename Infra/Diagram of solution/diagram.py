@@ -21,9 +21,9 @@ with Diagram("AIK Portal diagram", show=False):
         instance2 - db2
 
 
-    autosc = AutoScaling("f")
+    autosc = AutoScaling("autoscaler")
     autosc - instance1
-    loadbalancer = ELB("lb")
+    loadbalancer = ELB("loadbalancer")
     instance1 - instance2
     db1 - db2
     
