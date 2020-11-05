@@ -1,6 +1,6 @@
 # Infrastructure code
 
-This repository includes all the Infrastructure as Code modulesincluding Ansible, Terraform, Docker 
+This repository includes all the Infrastructure as Code modulesincluding SaltSatck, Terraform, Docker 
 
 ## Warning
 * NEVER make this repo or any part of it available publicly in any way
