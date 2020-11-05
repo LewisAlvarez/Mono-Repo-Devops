@@ -5,20 +5,71 @@ provider "aws"{
 }
 
 #Basados en el diagrama de la solución los recursos a crear son: 2 intancias EC2, 2 zonas de disponibilidad, 1 balanceador de carga, 1 auto-scaling-group y 2 RDS.
+#Creacion de la VPC para el portal de aik
+resource "aws_vpc" "aik_vpc" {
+    #name = "aik-vpc"
+    cidr_block = var.vpc_cidr
+
+    tags = {
+     Name = "automatizacion-est1-aik-vpc"
+  } 
+}
+
+#Internet Gateway como puerta de enlace a los recursos en la nube 
+resource "aws_internet_gateway" "aik_igw" {
+    #name = "aik-igw"
+    vpc_id = aws_vpc.aik_vpc.id
+}
+
+#Creacion de las subnets
+#Cantidad de subnets 2
+resource "aws_subnet" "aik_subnet_1" {
+    #name = "aik-subnet-1"
+    vpc_id                  = aws_vpc.aik_vpc.id
+    cidr_block              = cidrsubnet(var.vpc_cidr, 8, 1)
+    availability_zone       = element(split(",", var.availability_zones), 0)
+    map_public_ip_on_launch = true
+
+    tags = {
+        Name = "auto-subnet-public"
+    }
+}
+
+#Subnet 2
+resource "aws_subnet" "aik_subnet_2" {
+    #name = "aik-subnet-2"
+    vpc_id                  = aws_vpc.aik_vpc.id
+    cidr_block              = cidrsubnet(var.vpc_cidr, 8, 3)
+    availability_zone       = element(split(",", var.availability_zones), 0)
+    map_public_ip_on_launch = true
+
+    tags = {
+        Name = "auto-subnet-public"
+    }
+}
 
 #Se crea un security group para permitir el acceso al pueto de la aplicacion
 resource "aws_security_group" "aik_security_group" {
-    name = "aik-security-group"
+    #name = "aik-security-group"
+    vpc_id      = "${aws_vpc.aik_vpc.id}"
+    #vpc_id      = [aws_vpc.aik_vpc.id]
     description = "Grupo de seguridad para el aplicativo aik"
 
     #Acceso http desde cualquier direccion
     ingress {
-        from_port = 80
+        from_port = var.port_aik_front
         to_port = var.port_aik_front
         protocol = "tcp"
         cidr_blocks = [
             "0.0.0.0/0"
         ]
+    }
+
+    ingress {
+        from_port   = var.port_ssh
+        to_port     = var.port_ssh
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
     }
 
     #Salida de internet
@@ -33,15 +84,11 @@ resource "aws_security_group" "aik_security_group" {
 
 }
 
-#Obtenemos las zonas de disponibilidad para la region seleccionada
-data "aws_availability_zones" "all_zones" {}
-
 #Creacion de un balanceador de carga
 resource "aws_elb" "aik_elb" {
     name = "aik-elb"
-    #availability_zones = []"${data.aws_availability_zones.all_zones.names}"]
-    security_groups = ["${aws_security_group.aik_security_group.id}"]
-
+    subnets = [aws_subnet.aik_subnet_1.id, aws_subnet.aik_subnet_2.id]
+    security_groups = [aws_security_group.aik_security_group.id]
     listener {
         instance_port = 80
         instance_protocol = "http"
@@ -64,43 +111,69 @@ resource "aws_launch_configuration" "aik_configuration"{
     name = "placeholder-aik-lc"
     image_id = var.aik_ami_id
     instance_type = var.aik_instance_type
-    security_group = [aws_security_group.aik_security_group.id]
+    security_groups = [aws_security_group.aik_security_group.id]
     key_name = var.aik_key_name
+    #Gestion de la configuracion con saltstack ....
+    #.......
 }
 #Creacion del autoscaling group
 resource "aws_autoscaling_group" "aik_autoscaling"{
     name = "aik-autoscaling"
-    availability_zones = ["${data.aws_availability_zones.all_zones.names}"]
+    availability_zones = [aws_subnet.aik_subnet_1.id, aws_subnet.aik_subnet_2.id]
     force_delete = true
     min_size = var.autoscaling_max
     max_size = var.autoscaling_min
     #Lo que debe realizar cada vez que escale
     launch_configuration = aws_launch_configuration.aik_configuration.name
     #Se ubica la nueva instancia dentro del balanceador de carga
-    load_balancers = ["${aws_elb.aik_elb.name}"]
+    load_balancers = [aws_elb.aik_elb.name]
 
     tag {
         key = "Name"
         value = "aik-autoscaling"
+        propagate_at_launch = true
+    }
+}
+
+#RDS base de datos
+resource "aws_db_instance" "aik_db_rds" {
+    allocated_storage    = 20
+    storage_type         = "gp2"
+    engine               = "mysql"
+    engine_version       = "5.7"
+    instance_class       = "db.t2.micro"
+    name                 = "aik-db-rds"
+    username             = var.rds_db_username
+    password             = var.rds_db_password
+    parameter_group_name = "default.mysql5.7"
+}
+
+#Bucket S3
+resource "aws_s3_bucket" "aik_s3_configuration" {
+    bucket = "ais-bucket-config"
+    acl    = "private"
+    tags = {
+        Name        = "aik_s3_configuration"
+        #Environment = "Dev"
     }
 }
 
 #Crear una instancia EC2 para el back
-resource "aws_instance" "aik_back" {
-	ami = var.aik_ami_id
-	instance_type = "t2.micro"
-	
-	tags = {
-		Name = "EC2 BackEnd AIK"
-	}
-}
+#resource "aws_instance" "aik_back" {
+#	ami = var.aik_ami_id
+#	instance_type = "t2.micro"
+#	
+#	tags = {
+#		Name = "EC2 BackEnd AIK"
+#	}
+#}
 
 #Crear una instancia EC2 para el front
-resource "aws_instance" "aik_front" {
-	ami = var.aik_ami_id
-	instance_type = var.aik_instance_type
-    
-	tags = {
-		Name = "EC2 FrontEnd AIK"
-	}
-}
+#resource "aws_instance" "aik_front" {
+#	ami = var.aik_ami_id
+#	instance_type = var.aik_instance_type
+#   
+#	tags = {
+#		Name = "EC2 FrontEnd AIK"
+#	}
+#}

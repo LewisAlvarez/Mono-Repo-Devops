@@ -32,7 +32,36 @@ variable "autoscaling_min"{
     default = "1"
     description = "Numero minimo de instancias en autoscaling"
 }
+
+#Key name para la instancia ec2
 variable "aik_key_name" {
   description = "Key pair name"
   default     = "estudianteAutomatizacion20202_3"
+}
+
+#Puerto para conexion remota
+variable "port_ssh" {
+    default = 22
+    description = "Puerto para gestion remota"
+}
+#CDIR general para la VPC
+variable "vpc_cidr" {
+    default = "10.0.1.0/16"
+    description = "CIDR de la VPC donde van a vivir las 2 zonas de disponibilidad c/u con una subnet"
+}
+#Zonas de disponibilidad
+variable "availability_zones" {
+  description = "zonas de disponibilidad a usar"
+  default = "us-east-2a,us-east-2b"
+}
+
+#Variables para base de datos
+variable "rds_db_username" {
+  description = "Nombre de usuario para la database"
+  default = "aikdbuser"
+}
+
+variable "rds_db_password" {
+  description = "Password de la base de datos"
+  default = "aikdbuser"
 }
