@@ -14,7 +14,7 @@ variable "port_aik_back"{
 #Variables usadas para la configuración de las instancias
 #AMI
 variable "aik_ami_id" {
-    default = "ami-0357d42faf6fa582f"
+    default = "ami-03657b56516ab7912"
     description = "ID de la imagen ami"
 }
 #Instance Type
@@ -46,7 +46,7 @@ variable "port_ssh" {
 }
 #CDIR general para la VPC
 variable "vpc_cidr" {
-    default = "10.0.1.0/16"
+    default = "10.0.0.0/16"
     description = "CIDR de la VPC donde van a vivir las 2 zonas de disponibilidad c/u con una subnet"
 }
 #Zonas de disponibilidad
