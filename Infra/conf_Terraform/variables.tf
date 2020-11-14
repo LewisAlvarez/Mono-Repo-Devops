@@ -29,7 +29,7 @@ variable "autoscaling_max"{
 }
 #Minimo de numero de instancias en autoscaling
 variable "autoscaling_min"{
-    default = "1"
+    default = "2"
     description = "Numero minimo de instancias en autoscaling"
 }
 

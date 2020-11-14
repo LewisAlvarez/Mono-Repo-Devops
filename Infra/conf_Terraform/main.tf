@@ -7,7 +7,7 @@ provider "aws"{
 #Basados en el diagrama de la solución los recursos a crear son: 2 intancias EC2, 2 zonas de disponibilidad, 1 balanceador de carga, 1 auto-scaling-group y 2 RDS.
 #Creacion de la VPC para el portal de aik
 resource "aws_vpc" "aik_vpc" {
-    # Name = "aik-student10-vpc"
+    # Name = "aik-student3-vpc"
     cidr_block = var.vpc_cidr
     instance_tenancy = "default"
 
@@ -123,19 +123,17 @@ resource "aws_launch_configuration" "aik_configuration"{
 #Creacion del autoscaling group
 resource "aws_autoscaling_group" "aik_autoscaling"{
     name = "aik-autoscaling-3"
-    availability_zones = [aws_subnet.aik_subnet_1.id, aws_subnet.aik_subnet_2.id]
     force_delete = true
     min_size = var.autoscaling_max
     max_size = var.autoscaling_min
+    vpc_zone_identifier = [aws_subnet.aik_subnet_1.id, aws_subnet.aik_subnet_2.id]
     #Lo que debe realizar cada vez que escale
     launch_configuration = aws_launch_configuration.aik_configuration.name
     #Se ubica la nueva instancia dentro del balanceador de carga
     load_balancers = [aws_elb.aik_elb.name]
-   
-
     tag {
         key = "Name"
-        value = "aik-autoscaling"
+        value = "aik-autoscaling-3"
         propagate_at_launch = true
     }
 }
@@ -164,7 +162,7 @@ resource "aws_db_instance" "aik_db_rds" {
     port = 3306
     publicly_accessible = false
     multi_az = false
-    vpc_security_group_ids = [aws_security_group.aik_security_group.vpc_id]
+    vpc_security_group_ids = [aws_security_group.aik_security_group.id]
     db_subnet_group_name = aws_db_subnet_group.aik-db-subn-group.name
     final_snapshot_identifier = "rdsDatabase"
 }
