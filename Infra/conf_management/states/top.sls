@@ -1,8 +1,7 @@
 base:
-  'roles:back':
+  'roles:frontend':
     - match: grain
-    - backEnd
-
-  'roles:front':
-    - match: grain
-    - frontEnd
+    - aik-ui
+    - aik-back
+    - nodejs
+    - yum-s3

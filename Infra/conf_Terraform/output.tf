@@ -5,3 +5,7 @@ output "availability_zone" {
         var.availability_zones
     ]
 }
+
+output "elb_public_dns" {
+value = aws_elb.aik_elb.dns_name
+}
