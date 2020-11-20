@@ -12,4 +12,9 @@ sudo yum clean expire-cache;sudo yum -y install salt-minion; chkconfig salt-mini
 #config roles name
 sudo cp -r /srv/app/Infra/conf_management/minion.d /etc/salt/
 echo -e 'grains:\n roles:\n - aik-portal' > /etc/salt/minion.d/grains.conf
-sudo salt-call state.apply > ~/call.log
+#sudo salt-call state.apply > ~/call.log
+
+#Correr cada uno de forma particular.
+sudo salt-call --local state.apply node
+sudo salt-call --local state.apply frontend
+sudo salt-call --local state.apply backend
