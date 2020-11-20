@@ -1,4 +1,4 @@
 base:
-  'roles:frontend':
+  'roles:mateito':
     - match: grain
-    - frontEnd 
+    - front-end
