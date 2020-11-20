@@ -149,7 +149,7 @@ resource "aws_launch_configuration" "aik_configuration"{
     security_groups = [aws_security_group.aik_security_group.id]
     key_name = var.aik_key_name
     #Gestion de la configuracion con saltstack ....
-    user_data = file("../scripts/awsLaunchConfiguration.sh.")
+    user_data = file("../scripts/awsLaunchConfiguration.sh")
     #.......
 }
 #Creacion del autoscaling group

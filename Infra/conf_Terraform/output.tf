@@ -6,7 +6,6 @@ output "availability_zone" {
     ]
 }
 
-#Esta es la salida para que tiene la URL de del ELB para ingresar al portal
 output "elb_public_dns" {
-    value = aws_lb.aik_lb.dns_name
+value = aws_elb.aik_elb.dns_name
 }
