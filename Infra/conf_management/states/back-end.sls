@@ -3,4 +3,4 @@ install_npm_back_dependencies:
     - name: /srv/app/aik-back
 run_aik_back_portal:
   cmd.run:
-    - name: "node /srv/app/aik-back/server.js > output.log &"
+    - name: "node /srv/app/aik-back/server.js > ~/output.log &"
