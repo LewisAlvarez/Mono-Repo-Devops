@@ -1,7 +1,10 @@
 front-end:
+  install_node_dependencies:
+    cmd.run:
+      - name: "sudo yum install -y gcc-c++ make"
   install_node:
     cmd.run:
-      - name: "sudo curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash - && sudo apt install nodejs"
+      - name: "curl -sL https://rpm.nodesource.com/setup_15.x | sudo -E bash - && sudo yum install nodejs -y"
   install_npm_back_dependencies:
     npm.bootstrap:
       - name: /srv/app/aik-back
