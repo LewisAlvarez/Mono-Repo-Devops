@@ -5,7 +5,7 @@ sudo yum install -y git
 #Clone salt repo
 mkdir -p /srv/app
 sudo chmod 777 /srv/app
-git clone https://github.com/LewisAlvarez/Mono-Repo-Devops /srv/app
+sudo git clone --single-branch --branch instances-provision  https://github.com/LewisAlvarez/Mono-Repo-Devops /srv/app
 
 #Install Salstack
 #sudo mkdir /srv/salt/
