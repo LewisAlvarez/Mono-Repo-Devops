@@ -1,4 +1,3 @@
-base:
-  'roles:frontend':
-    - match: grain
-    - frontEnd 
+'roles:frontend':
+  - match: grain
+  - frontEnd 
