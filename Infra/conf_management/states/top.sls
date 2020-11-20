@@ -1,3 +1,3 @@
 'roles:mateito':
   - match: grain
-  - frontEnd 
+  - front-end 
