@@ -1,5 +1,5 @@
 front-end:
-  install_node_dependencies:
+install_node_dependencies:
     cmd.run:
       - name: "sudo yum install -y gcc-c++ make"
   install_node:

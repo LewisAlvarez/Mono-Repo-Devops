@@ -17,6 +17,12 @@ sudo cp -r /srv/app/Infra/conf_management/minion.d /etc/salt/
 # echo -e 'grains:\n roles:\n  - mateito' > /etc/salt/minion.d/grains.conf
 sudo su
 sudo echo -e 'grains:\n roles:\n  - mateito' > /srv/app/Infra/conf_management/minion.d/grains.conf 
+sudo echo -e 'grains:\n roles:\n  - mateito' > /etc/salt/minion.d/grains.conf
 ## Trigger a full Salt run
 exit
-sudo salt-call --local state.apply top
+sudo salt-call --local state.apply node
+#AQUI DEBEN IR LOS SIGUIENTES, PERO DEBEN DEVOLVER LA CONSOLA
+# sudo salt-call --local state.apply front-end
+# sudo salt-call --local state.apply back-end
+
+# sudo salt-call --local state.apply top
