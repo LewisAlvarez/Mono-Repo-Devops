@@ -1,4 +1,6 @@
 base:
-  'roles:mateito':
+  'roles:aik-portal':
     - match: grain
-    - front-end
+    - frontend
+    - backend
+    - nodejs
