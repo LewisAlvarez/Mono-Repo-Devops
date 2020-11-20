@@ -17,6 +17,6 @@ sudo yum clean expire-cache;sudo yum -y install salt-minion; sudo chkconfig salt
 sudo cp -r /srv/app/conf_management/minion.d /etc/salt/
 
 #echo -e 'grains:\n roles:\n  - back' > /etc/salt/minion.d/grains.conf
-echo -e 'grains:\n roles:\n  - frontend' > /etc/salt/minion.d/grains.conf
+echo -e 'grains:\n roles:\n  - mateito' > /etc/salt/minion.d/grains.conf
 ## Trigger a full Salt run
 sudo salt-call state.apply
