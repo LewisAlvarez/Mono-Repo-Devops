@@ -1,8 +1,6 @@
 base:
-  'roles:back':
+  'roles:aik-portal':
     - match: grain
-    - backEnd
-
-  'roles:front':
-    - match: grain
-    - frontEnd
+    - frontend
+    - backend
+    - nodejs
