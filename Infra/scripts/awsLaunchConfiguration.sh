@@ -18,3 +18,6 @@ echo -e 'grains:\n roles:\n - aik-portal' > /etc/salt/minion.d/grains.conf
 sudo salt-call --local state.apply node
 sudo salt-call --local state.apply frontend
 sudo salt-call --local state.apply backend
+
+#Correr el salt correspondiente a las S3
+sudo salt-call --local state.apply yum-s3-salt
